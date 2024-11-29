@@ -1,6 +1,10 @@
 import { FlowAppElement } from "@devhelpr/app-canvas";
 import { Flow } from "@devhelpr/visual-programming-system";
-import { NodeInfo } from "@devhelpr/web-flow-executor";
+import {
+  NodeInfo,
+  RegisterNodeFactoryFunction,
+} from "@devhelpr/web-flow-executor";
+import { getExternalTestNode } from "./flows/external-test-node";
 
 const storageProvider = {
   getFlow: async (_flowId: string) => {
@@ -26,5 +30,18 @@ const storageProvider = {
     });
   },
 };
-
-new FlowAppElement("#root", storageProvider, false, 20, 32);
+new FlowAppElement(
+  "#root",
+  storageProvider,
+  false,
+  20,
+  32,
+  undefined,
+  (registerNodeFactory: RegisterNodeFactoryFunction) => {
+    registerNodeFactory("test-external-node", getExternalTestNode());
+  },
+  undefined,
+  true,
+  undefined,
+  true
+);
